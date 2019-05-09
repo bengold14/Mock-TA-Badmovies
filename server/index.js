@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var request = require('request')
 var database = require('../db/mongodb/index.js')
 var app = express();
+var morgan = require('morgan')
 
 // Sign up and get your moviedb API key here:
 // https://www.themoviedb.org/account/signup
@@ -12,10 +13,11 @@ var app = express();
 var apiHelpers = require('./helpers/apiHelpers.js');
 
 //Middleware
+app.use(morgan('combined'))
 app.use(bodyParser.json());
 
 // Due to express, when you load the page, it doesn't make a get request to '/', it simply serves up the dist folder
-app.use(express.static(__dirname + '/../client/dist'));
+app.use(express.static(__dirname + '/../client/dist/'));
 
 app.get('/genres', function(req, res) {
   apiHelpers.getGenres((err,data)=>{
@@ -28,9 +30,9 @@ app.get('/genres', function(req, res) {
   })  
 });
 
-app.get('/search', function(req, res) {
+app.post('/search', function(req, res) {
   // use this endpoint to search for movies by genres (using API key): https://api.themoviedb.org/3/discover/movie
-  apiHelpers.getWorstMovies(req.body.id,(err,data)=>{ //add in genre search functionality
+  apiHelpers.getWorstMovies(req.body.genreId,(err,data)=>{
     if (err) {
       console.log('error happened getting the genres',err)
       res.status(500).send()
