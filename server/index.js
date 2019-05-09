@@ -21,7 +21,7 @@ app.use(express.static(__dirname + '/../client/dist'));
 app.get('/genres', function(req, res) {
   apiHelpers.getGenres((err,data)=>{
     if (err) {
-      console.log('error happened',err)
+      console.log('error happened getting the genres',err)
       res.status(500).send()
     } else {
       res.status(200).send(data)
@@ -31,8 +31,14 @@ app.get('/genres', function(req, res) {
 
 app.get('/search', function(req, res) {
   // use this endpoint to search for movies by genres (using API key): https://api.themoviedb.org/3/discover/movie
-  //  /discover/movie?sort_by=popularity.asc
-  // and sort them by votes (worst first) using the search parameters in themoviedb API
+  apiHelpers.getWorstMovies((err,data)=>{
+    if (err) {
+      console.log('error happened getting the genres',err)
+      res.status(500).send()
+    } else {
+      res.status(200).send(data)
+    }
+  })
 });
 
 

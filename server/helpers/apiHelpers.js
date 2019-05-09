@@ -13,7 +13,19 @@ const { API_KEY } = require('../../config.js');
 exports.getGenres = function(callback) {
   axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=en-US`) //try to refactor this using params
     .then((list)=> {
-      callback(null,list)
+      console.log('got here',list.data.genres)
+      callback(null,list.data.genres)
+    })
+    .catch((err)=> {
+      callback(err,null)
+    })
+}
+
+exports.getWorstMovies = function(callback) {
+  axios.get(`https://api.themoviedb.org/3/discover/movie?sort_by=popularity.asc&api_key=${API_KEY}&language=en-US`) //try to refactor this using params
+    .then((list)=> {
+      console.log('got here',list.data)
+      callback(null,list.data)
     })
     .catch((err)=> {
       callback(err,null)
