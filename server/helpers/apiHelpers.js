@@ -1,4 +1,3 @@
-const request = require('request');
 const axios = require('axios');
 const { API_KEY } = require('../../config.js');
 
@@ -13,7 +12,6 @@ const { API_KEY } = require('../../config.js');
 exports.getGenres = function(callback) {
   axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=en-US`) //try to refactor this using params
     .then((list)=> {
-      console.log('got here',list.data.genres)
       callback(null,list.data.genres)
     })
     .catch((err)=> {
@@ -21,8 +19,9 @@ exports.getGenres = function(callback) {
     })
 }
 
-exports.getWorstMovies = function(callback) {
-  axios.get(`https://api.themoviedb.org/3/discover/movie?sort_by=popularity.asc&api_key=${API_KEY}&language=en-US`) //try to refactor this using params
+exports.getWorstMovies = function(genreId,callback) {
+  console.log('genre id is',genreId)
+  axios.get(`https://api.themoviedb.org/3/discover/movie?with_genres=${genreId}&sort_by=popularity.asc&api_key=${API_KEY}&language=en-US`) //try to refactor this using params
     .then((list)=> {
       console.log('got here',list.data)
       callback(null,list.data)

@@ -1,8 +1,10 @@
-import { Mongoose, model } from "mongoose";
+//run mongod and mongo
 
-Mongoose.connect("mongodb://localHost3000/badMovies",{ useNewUrlParser: true })
+var Mongoose = require('mongoose')
 
-var myMovies = Mongoose.model('badMovies',new Schema ({
+Mongoose.connect("mongodb://localHost/badMovies",{ useNewUrlParser: true })
+
+var myMovies = Mongoose.model('badMovies',new Mongoose.Schema ({
   name: String,
   url: String,
 }))
