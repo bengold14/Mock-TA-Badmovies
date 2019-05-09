@@ -10,3 +10,12 @@ const { API_KEY } = require('../../config.js');
 // Get your API Key and save it in your config file
 
 // Don't forget to export your functions and require them within your server file
+exports.getGenres = function(callback) {
+  axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=en-US`) //try to refactor this using params
+    .then((list)=> {
+      callback(null,list)
+    })
+    .catch((err)=> {
+      callback(err,null)
+    })
+}
