@@ -1,18 +1,48 @@
-// 
+import { Mongoose, model } from "mongoose";
 
-const mongoose = require('mongoose');
-if(process.env.MONGODB_URI){
-  mongoose.connect(process.env.MONGODB_URI)
-} else{
-  mongoose.connect('mongodb://localhost:27017/badmovies', { useNewUrlParser: true });
+Mongoose.connect("mongodb://localHost3000/badMovies",{ useNewUrlParser: true })
+
+var myMovies = Mongoose.model('badMovies',new Schema ({
+  name: String,
+  url: String,
+}))
+
+var storeMovie = function (movie) {
+  var newFavorite = new myMovies ({
+    name: movie.name,
+    url: movie.url
+  })
+  newFavorite.save(function (err){
+    if (err) {
+      console.log('we errored in storing movie (index.js)',err)
+    } else {
+      console.log('we succeeded in storing movie (index.js)')
+    }
+  })
 }
 
-const db = mongoose.connection;
+var deleteMovie = function (movie) {
+  myMovies.deleteOne({url: movie.url},function (err){
+    if (err) {
+      console.log('we errored in removing movie (index.js)',err)
+    } else {
+      console.log('we succeeded in removing movie (index.js)')
+    }
+  })
+}
 
-mongoose.Promise = Promise;
-db.on('error', console.error.bind(console, 'Connection error:'));
-db.once('open', () => {
-  console.log('Connected to db...');
-})
+var retrieveFavorites = function (callback) {
+  myMovies.find({},function (err,data){
+    if (err) {
+      console.log('we errored in retrieving all movies (index.js)',err)
+      callback(err,null)
+    } else {
+      console.log('we succeeded in retrieving all movies (index.js)')
+      callback(null,data)
+    }
+  })
+}
 
-module.exports.db = db
+module.exports.storeMovie = storeMovie
+module.exports.deleteMovie = deleteMovie
+module.exports.retrieveFavorites = retrieveFavorites
