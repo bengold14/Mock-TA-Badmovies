@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
 import axios from 'axios';
-// import AnyComponent from './components/filename.jsx'
 import Search from './components/Search.jsx'
 import Movies from './components/Movies.jsx'
 
@@ -21,11 +19,12 @@ class App extends React.Component {
     this.swapFavorites = this.swapFavorites.bind(this)
   }
 
-  getMovies() {
+  getMovies(genreId) {
     // make an axios request to your server on the GET SEARCH endpoint
-    axios.get('localhost:3000/search') //add in a genre
+    axios.post('/search', {"genreId":genreId})
     .then((data)=>{
-      setState({favorites:data})
+      this.setState({movies:data.data.results})
+      console.log(this.state.movies)
     })
     .catch((err)=>{
       console.log(err)
@@ -48,12 +47,16 @@ class App extends React.Component {
     });
   }
 
+  componentWillMount() {
+    this.getMovies(18)
+  }
+
   render () {
   	return (
       <div className="app">
         <header className="navbar"><h1>Bad Movies</h1></header> 
         <div className="main">
-          <Search swapFavorites={this.swapFavorites} showFaves={this.state.showFaves}/>
+          <Search swapFavorites={this.swapFavorites} showFaves={this.state.showFaves} getMovies={this.getMovies}/>
           <Movies movies={this.state.showFaves ? this.state.favorites : this.state.movies} showFaves={this.state.showFaves}/>
         </div>
       </div>
