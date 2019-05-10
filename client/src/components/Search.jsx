@@ -20,13 +20,12 @@ class Search extends React.Component {
       console.log('error getting genres Search.jsx',err)
     })
   }
-  // onClick={this.props.getMovies(this.state.currentGenre)}
+
   componentWillMount(){
     this.getGenres()
   }
 
   updateGenre (e) {
-    console.log(e.target.value)
     this.setState({currentGenreId: e.target.value})
   }
 
@@ -37,9 +36,9 @@ class Search extends React.Component {
         <br/><br/>
 
         <select value={this.state.currentGenreId} onChange={this.updateGenre}>
-          {this.state.genres.data.map((genre)=>{
+          {this.state.genres.data.map((genre,index)=>{
             return (
-              <option value={genre.id}>{genre.name}</option>
+              <option value={genre.id} key={index}>{genre.name}</option>
             )
           })}
         </select>

@@ -55,7 +55,7 @@ app.get('/favorites', function (req,res) {
 
 app.post('/save', function(req, res) {
   //save movie as favorite
-  var movie = req.body.movie
+  var movie = req.body
   database.storeMovie(movie,(err,success) => {
     if (err) {
       console.log('error happened saving the movie',err)
@@ -67,7 +67,7 @@ app.post('/save', function(req, res) {
 });
 
 app.post('/delete', function(req, res) {
-  var movie = req.body.movie
+  var movie = req.body
   database.deleteMovie(movie,(err,success) => {
     if (err) {
       console.log('error happened deleting the movie',err)

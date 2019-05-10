@@ -5,14 +5,20 @@ var Mongoose = require('mongoose')
 Mongoose.connect("mongodb://localHost/badMovies",{ useNewUrlParser: true })
 
 var myMovies = Mongoose.model('badMovies',new Mongoose.Schema ({
-  name: String,
-  url: String,
+  title: String,
+  poster_path: String,
+  release_date: String,
+  popularity: String,
+  overview: String
 }))
 
 var storeMovie = function (movie,callback) {
   var newFavorite = new myMovies ({
-    name: movie.name,
-    url: movie.url
+    title: movie.title,
+    poster_path: movie.poster_path,
+    release_date: movie.release_date,
+    popularity: movie.popularity,
+    overview: movie.overview
   })
   newFavorite.save(function (err,success){
     if (err) {
@@ -26,7 +32,7 @@ var storeMovie = function (movie,callback) {
 }
 
 var deleteMovie = function (movie,callback) {
-  myMovies.deleteOne({url: movie.url},function (err,success){
+  myMovies.deleteOne({title:movie.title},function (err,success){
     if (err) {
       console.log('we errored in removing movie (index.js)',err)
       callback(err,null)

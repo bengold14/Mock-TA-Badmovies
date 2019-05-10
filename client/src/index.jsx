@@ -24,7 +24,6 @@ class App extends React.Component {
     axios.post('/search', {"genreId":genreId})
     .then((data)=>{
       this.setState({movies:data.data.results})
-      console.log(this.state.movies)
     })
     .catch((err)=>{
       console.log(err)
@@ -32,12 +31,33 @@ class App extends React.Component {
     
   }
 
-  saveMovie() {
-    // same as above but do something diff
+  getFavorites() {
+    axios.get('/favorites')
+    .then((data)=>{
+      console.log('get favorites data =',data.data)
+      this.setState({favorites:data.data})
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+    
   }
 
-  deleteMovie() {
-    // same as above but do something diff
+
+  saveMovie(e) {
+    axios.post("/save",e)
+    .then()
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
+  deleteMovie(e) {
+    axios.post("/delete",e)
+    .then()
+    .catch((err)=>{
+      console.log(err)
+    })
   }
 
   swapFavorites() {
@@ -49,6 +69,7 @@ class App extends React.Component {
 
   componentWillMount() {
     this.getMovies(18)
+    this.getFavorites()
   }
 
   render () {
@@ -57,7 +78,7 @@ class App extends React.Component {
         <header className="navbar"><h1>Bad Movies</h1></header> 
         <div className="main">
           <Search swapFavorites={this.swapFavorites} showFaves={this.state.showFaves} getMovies={this.getMovies}/>
-          <Movies movies={this.state.showFaves ? this.state.favorites : this.state.movies} showFaves={this.state.showFaves}/>
+          <Movies movies={this.state.showFaves ? this.state.favorites : this.state.movies} showFaves={this.state.showFaves} saveMovie ={this.saveMovie} deleteMovie={this.deleteMovie}/>
         </div>
       </div>
     );
