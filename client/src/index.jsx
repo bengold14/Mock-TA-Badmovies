@@ -12,15 +12,14 @@ class App extends React.Component {
       favorites: [{deway: "favorites"}],
       showFaves: false,
     };
-    // you might have to do something important here!
     this.getMovies = this.getMovies.bind(this)
     this.saveMovie = this.saveMovie.bind(this)
     this.deleteMovie = this.deleteMovie.bind(this)
     this.swapFavorites = this.swapFavorites.bind(this)
+    this.componentWillMount = this.componentWillMount.bind(this)
   }
 
   getMovies(genreId) {
-    // make an axios request to your server on the GET SEARCH endpoint
     axios.post('/search', {"genreId":genreId})
     .then((data)=>{
       this.setState({movies:data.data.results})
@@ -28,7 +27,6 @@ class App extends React.Component {
     .catch((err)=>{
       console.log(err)
     })
-    
   }
 
   getFavorites() {
@@ -43,10 +41,9 @@ class App extends React.Component {
     
   }
 
-
   saveMovie(e) {
     axios.post("/save",e)
-    .then()
+    .then(this.componentWillMount)
     .catch((err)=>{
       console.log(err)
     })
@@ -54,14 +51,13 @@ class App extends React.Component {
 
   deleteMovie(e) {
     axios.post("/delete",e)
-    .then()
+    .then(this.componentWillMount)
     .catch((err)=>{
       console.log(err)
     })
   }
 
   swapFavorites() {
-  //dont touch
     this.setState({
       showFaves: !this.state.showFaves
     });
@@ -77,8 +73,18 @@ class App extends React.Component {
       <div className="app">
         <header className="navbar"><h1>Bad Movies</h1></header> 
         <div className="main">
-          <Search swapFavorites={this.swapFavorites} showFaves={this.state.showFaves} getMovies={this.getMovies}/>
-          <Movies movies={this.state.showFaves ? this.state.favorites : this.state.movies} showFaves={this.state.showFaves} saveMovie ={this.saveMovie} deleteMovie={this.deleteMovie}/>
+          <Search 
+            swapFavorites={this.swapFavorites} 
+            showFaves={this.state.showFaves} 
+            getMovies={this.getMovies}
+            componentWillMount={this.componentWillMount}
+            />
+          <Movies 
+            movies={this.state.showFaves ? this.state.favorites : this.state.movies} 
+            showFaves={this.state.showFaves} 
+            saveMovie ={this.saveMovie} 
+            deleteMovie={this.deleteMovie}
+          />
         </div>
       </div>
     );

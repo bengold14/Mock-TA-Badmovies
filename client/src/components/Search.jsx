@@ -32,7 +32,10 @@ class Search extends React.Component {
   render() {
     return (
       <div className="search">
-        <button onClick={() => {this.props.swapFavorites()}}>{this.props.showFaves ? "Show Results" : "Show Favorites"}</button>
+        <button onClick={() => {
+          this.props.swapFavorites()
+          this.props.componentWillMount()
+        }}>{this.props.showFaves ? "Show Results" : "Show Favorites"}</button>
         <br/><br/>
 
         <select value={this.state.currentGenreId} onChange={this.updateGenre}>
